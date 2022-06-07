@@ -1,4 +1,4 @@
-﻿using BankProjecktCMD.Class;
+using BankProjecktCMD.Class;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +17,12 @@ namespace BankProjecktCMD
             Random random = new Random();
             Check check = new Check();
             Bank bank = new Bank();
+            Client client = new Client();
+            bool Bool_Register = false;
+            bool CheckCycle = false;
+
+            Console.WriteLine("Вы зарегистрированы ? 1) да  2) нет ");
+            int Byte_Register = int.Parse(Console.ReadLine());
 
             Register_Check();
 
@@ -28,169 +34,15 @@ namespace BankProjecktCMD
 
             void Register_Check()
             {
-                Client client = new Client();
-                Console.WriteLine("Вы зарегистрированы ? 1) да  2) нет ");
-                int Byte_Register = int.Parse(Console.ReadLine());
-
-                bool Bool_Register = false;
-                bool CheckCycle = false;
                 while (CheckCycle == false)
                 {
                     if (Byte_Register == 1)
                     {
-                        CheckCycle = true;
-                        Bool_Register = true;
-                        if (Bool_Register == true)
-                        {
-                            bool b = File.Exists("Data.txt");
-
-                            if (b == true)
-                            {
-                                StreamReader sr = new StreamReader("Data.txt");
-                                string[] line = File.ReadAllLines("Data.txt");
-
-                                if (string.IsNullOrEmpty(line[0]) || string.IsNullOrWhiteSpace(line[1]) || string.IsNullOrWhiteSpace(line[2]) || string.IsNullOrWhiteSpace(line[3]))
-                                {
-                                    Console.WriteLine("Данные не найдены");
-                                    Register_Check();
-
-                                }
-
-                                client.Client_ID = long.Parse(line[0]);
-                                client.Client_Name = line[1];
-                                client.Client_Age = int.Parse(line[2]);
-                                client.Str_Client_Gender = line[3];
-
-                                Console.WriteLine(client.Client_ID.ToString());
-                                Console.WriteLine(client.Client_Name.ToString());
-                                Console.WriteLine(client.Client_Age.ToString());
-                                Console.WriteLine(client.Str_Client_Gender.ToString());
-                            }
-                            else
-                            {
-
-                                Console.WriteLine("Файла с данными не существует, зарегистрируйтесь ");
-
-                                CheckCycle = true;
-                                Bool_Register = false;
-
-                                Console.WriteLine("Введите ваш ID: 16 чисел ");
-                                client.Client_ID = long.Parse(Console.ReadLine());
-
-                                while (client.Client_ID > 10000000000000000 || client.Client_ID < 1000000000000000)
-                                {
-                                    Console.WriteLine("Введите ID ещё раз: ");
-                                    client.Client_ID = long.Parse(Console.ReadLine());
-                                }
-                                Console.WriteLine("Введите ваше имя: ");
-                                client.Client_Name = Console.ReadLine();
-                                while (string.IsNullOrWhiteSpace(client.Client_Name))
-                                {
-                                    Console.WriteLine("Введите ваше имя ещё раз");
-                                    client.Client_Name = Console.ReadLine();
-                                }
-
-                                Console.WriteLine("Введите ваш возраст (полных лет): ");
-                                client.Client_Age = int.Parse(Console.ReadLine());
-                                while (client.Client_Age > 150 || client.Client_Age < 18)
-                                {
-                                    if (client.Client_Age < 18)
-                                    {
-                                        Console.WriteLine("Вы не достигли 18 лет ");
-                                    }
-                                    Console.WriteLine("Введите ваш возраст ещё раз: ");
-                                    client.Client_Age = int.Parse(Console.ReadLine());
-                                }
-                                Console.WriteLine("Введите ваш гендер 1) мужчина, 2) женщина ");
-                                client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
-                                if (client.Int_Client_Gender == 1)
-                                {
-                                    client.Str_Client_Gender = "мужчина";
-                                }
-                                else if (client.Int_Client_Gender == 2)
-                                {
-                                    client.Str_Client_Gender = "женщина";
-                                }
-
-                                while (client.Int_Client_Gender != 1 && client.Int_Client_Gender != 2)
-                                {
-                                    Console.WriteLine("Введите ваш гендер ешё раз 1) мужчина, 2) женщина ");
-                                    client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
-                                }
-                                Console.WriteLine();
-
-                                StreamWriter SW = new StreamWriter("Data.txt", false);
-
-                                SW.WriteLine(client.Client_ID.ToString());
-                                SW.WriteLine(client.Client_Name.ToString());
-                                SW.WriteLine(client.Client_Age.ToString());
-                                SW.WriteLine(client.Str_Client_Gender.ToString());
-                                SW.Close();
-
-                                Console.WriteLine("Готово");
-
-                            }
-                        }
+                        User_Registered();
                     }
                     else if (Byte_Register == 2)
                     {
-                        CheckCycle = true;
-                        Bool_Register = false;
-
-                        Console.WriteLine("Введите ваш ID: 16 чисел ");
-                        client.Client_ID = long.Parse(Console.ReadLine());
-
-                        while (client.Client_ID > 10000000000000000 || client.Client_ID < 1000000000000000)
-                        {
-                            Console.WriteLine("Введите ID ещё раз: ");
-                            client.Client_ID = long.Parse(Console.ReadLine());
-                        }
-                        Console.WriteLine("Введите ваше имя: ");
-                        client.Client_Name = Console.ReadLine();
-                        while (string.IsNullOrWhiteSpace(client.Client_Name))
-                        {
-                            Console.WriteLine("Введите ваше имя ещё раз");
-                            client.Client_Name = Console.ReadLine();
-                        }
-
-                        Console.WriteLine("Введите ваш возраст (полных лет): ");
-                        client.Client_Age = int.Parse(Console.ReadLine());
-                        while (client.Client_Age > 150 || client.Client_Age < 18)
-                        {
-                            if (client.Client_Age < 18)
-                            {
-                                Console.WriteLine("Вы не достигли 18 лет ");
-                            }
-                            Console.WriteLine("Введите ваш возраст ещё раз: ");
-                            client.Client_Age = int.Parse(Console.ReadLine());
-                        }
-                        Console.WriteLine("Введите ваш гендер 1) мужчина, 2) женщина ");
-                        client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
-                        if (client.Int_Client_Gender == 1)
-                        {
-                            client.Str_Client_Gender = "мужчина";
-                        }
-                        else if (client.Int_Client_Gender == 2)
-                        {
-                            client.Str_Client_Gender = "женщина";
-                        }
-
-                        while (client.Int_Client_Gender != 1 && client.Int_Client_Gender != 2)
-                        {
-                            Console.WriteLine("Введите ваш гендер ешё раз 1) мужчина, 2) женщина ");
-                            client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
-                        }
-                        Console.WriteLine();
-
-                        StreamWriter SW = new StreamWriter("Data.txt", false);
-
-                        SW.WriteLine(client.Client_ID.ToString());
-                        SW.WriteLine(client.Client_Name.ToString());
-                        SW.WriteLine(client.Client_Age.ToString());
-                        SW.WriteLine(client.Str_Client_Gender.ToString());
-                        SW.Close();
-
-                        Console.WriteLine("Готово");
+                        User_Not_Registered();
                     }
                     else
                     {
@@ -206,9 +58,8 @@ namespace BankProjecktCMD
                 while (true)
                 {
                     Console.WriteLine("Выберете действие: 1) Транзакция  2) Сменить аккаунт 3) Вклад 4) Кредит 5) Добавить банковскую карту 6) Отвязать банковскую карту 7) Сменить пин-код 8) информация о картах 9) Очистить консоль ");
-
                     int type = int.Parse(Console.ReadLine());
-                    while (type != 1 || type != 2 || type != 3 || type != 4 || type != 5 || type != 6 || type != 7 || type != 8 || type != 9)
+                    while (type > 9 || type < 1)
                     {
                         switch (type)
                         {
@@ -367,14 +218,11 @@ namespace BankProjecktCMD
                         Transfer();
                     }
                 }
-
-
             }
 
             void Contribution()
             {
                 Contribution Cont = new Contribution();
-
                 Console.WriteLine("Введите сумму вклада: ");
                 Cont.Cont_Money = decimal.Parse(Console.ReadLine());
                 while (check.Check_Money < Cont.Cont_Money || Cont.Cont_Money < 0)
@@ -382,7 +230,6 @@ namespace BankProjecktCMD
                     Console.WriteLine("Введите сумму вклада ещё раз :");
                     Cont.Cont_Money = decimal.Parse(Console.ReadLine());
                 }
-
                 Console.WriteLine("Введите время в годах");
                 Cont.Cont_Time = int.Parse(Console.ReadLine());
                 while (Cont.Cont_Time < 0 || Cont.Cont_Time > 50)
@@ -390,7 +237,6 @@ namespace BankProjecktCMD
                     Console.WriteLine("Введите время ещё раз");
                     Cont.Cont_Time = int.Parse(Console.ReadLine());
                 }
-
                 Console.WriteLine("Введите проценты годовых");
                 Cont.Cont_percent = int.Parse(Console.ReadLine());
                 while (Cont.Cont_percent < 0 || Cont.Cont_percent > 100)
@@ -398,16 +244,13 @@ namespace BankProjecktCMD
                     Console.WriteLine("Введите проценты ещё раз");
                     Cont.Cont_percent = int.Parse(Console.ReadLine());
                 }
-
                 Cont.Cont_pay = Cont.Cont_Money * Cont.Cont_percent * Cont.Cont_Time / 100;
-
                 Console.WriteLine($"По истечению срока вклада вы получите  {Cont.Cont_pay}");
 
                 check.Check_Money = check.Check_Money + Cont.Cont_pay;
-
                 Console.WriteLine($"На вашем счету {check.Check_Money}");
-                Cont.Cont_ID = random.Next(0, 10000000);
 
+                Cont.Cont_ID = random.Next(0, 10000000);
                 StreamWriter Sw = new StreamWriter($"ContributionHistory{Cont.Cont_ID}.txt", false);
 
                 Sw.WriteLine(Cont.Cont_ID.ToString());
@@ -462,7 +305,6 @@ namespace BankProjecktCMD
             void CreateBank_Card()
             {
                 int a = 0;
-
                 List_Cards.Add(Card);
                 List_Cards[a] = Card;
 
@@ -473,7 +315,6 @@ namespace BankProjecktCMD
                     if (CardAvaible.Int_Availabilityearlier == 1)
                     {
                         CardAvaible.Bool_Availabilityearlier = true;
-
                         bool v = File.Exists($"CardRegist.txt");
 
                         if (v == true)
@@ -496,22 +337,7 @@ namespace BankProjecktCMD
                         Console.WriteLine("Введите ещё раз у вас есть зарегистрированные карты ?  1) да 2) нет ");
                         CardAvaible.Int_Availabilityearlier = int.Parse(Console.ReadLine());
                     }
-
-                    /*
-                     *  StreamReader srv = new StreamReader("CheckID.txt");
-                    string[] linev = File.ReadAllLines("CheckID.txt");
-                    check.Check_ID = long.Parse(linev[0]);
-                    Console.WriteLine(check.Check_ID.ToString());
-                    check.Check_Money = decimal.Parse(linev[1]);
-
-                     *  Swr.WriteLine(Card.Card_serial_number.ToString());
-                Swr.WriteLine(Card.Card_Number.ToString());
-                Swr.WriteLine(Card.Card_Name.ToString());
-                Swr.WriteLine(Card.Card_Pin_Code.ToString());
-                Swr.Close();
-                      */
                 }
-
                 if (CardAvaible.Int_Availabilityearlier == 1)
                 {
                     CardAvaible.Bool_Availabilityearlier = true;
@@ -564,17 +390,13 @@ namespace BankProjecktCMD
                     Swr.WriteLine(Card.Card_Pin_Code.ToString());
                     Swr.Close();
 
-
-
                     Actions();
-
                 }
                 else
                 {
                     Console.WriteLine("Введите ещё раз у вас есть зарегистрированные карты ?  1) да 2) нет ");
                     CardAvaible.Int_Availabilityearlier = int.Parse(Console.ReadLine());
                 }
-
             }
 
             void DeleteBank_Card()
@@ -585,7 +407,6 @@ namespace BankProjecktCMD
                 {
                     Console.WriteLine("У вас нет карт для удаления ");
                 }
-
                 List_Cards.Remove(List_Cards[--x]);
 
                 Actions();
@@ -626,15 +447,12 @@ namespace BankProjecktCMD
                     NewPinCode();
                     Actions();
                 }
-
             }
 
             void Card_Info()
             {
-
                 for (int x = 0; x < List_Cards.Count; x++)
                 {
-
                     Bank_Card c = List_Cards[x];
                     Console.WriteLine();
                     Console.WriteLine(c.Card_serial_number.ToString());
@@ -642,17 +460,13 @@ namespace BankProjecktCMD
                     Console.WriteLine(c.Card_Number.ToString());
                     Console.WriteLine(c.Card_Pin_Code.ToString());
                     Console.WriteLine();
-
                 }
-
                 Actions();
-
             }
 
             void AccountIDverification()
             {
                 bool u = File.Exists("CheckID.txt");
-
 
                 Console.WriteLine("У вас зарегистрирован счёт ? 1) да 2) нет ");
                 check.Int_Register = int.Parse(Console.ReadLine());
@@ -696,14 +510,17 @@ namespace BankProjecktCMD
                     StreamWriter SWv = new StreamWriter("CheckID.txt");
                     Console.WriteLine("Введите ID счёта, 10 цифр ");
                     check.Check_ID = long.Parse(Console.ReadLine());
+
                     while (check.Check_ID >= 10000000000 || check.Check_ID < 1000000000)
                     {
                         Console.WriteLine("Введите ID счёта ещё раз");
                         check.Check_ID = long.Parse(Console.ReadLine());
 
                     }
+
                     Console.WriteLine("Введите количество денег на вашем счету");
                     check.Check_Money = long.Parse(Console.ReadLine());
+
                     while (check.Check_Money < 0)
                     {
                         Console.WriteLine("На вашем счету не может быть меньше 0 ");
@@ -711,10 +528,162 @@ namespace BankProjecktCMD
                     SWv.WriteLine(check.Check_ID.ToString());
                     SWv.WriteLine(check.Check_Money.ToString());
                     SWv.Close();
-
                 }
+            }
+
+            void User_Registered()
+            {
+                CheckCycle = true;
+                Bool_Register = true;
+                if (Bool_Register == true)
+                {
+                    bool b = File.Exists("Data.txt");
+
+                    if (b == true)
+                    {
+                        StreamReader sr = new StreamReader("Data.txt");
+                        string[] line = File.ReadAllLines("Data.txt");
+
+                        if (string.IsNullOrEmpty(line[0]) || string.IsNullOrWhiteSpace(line[1]) || string.IsNullOrWhiteSpace(line[2]) || string.IsNullOrWhiteSpace(line[3]))
+                        {
+                            Console.WriteLine("Данные не найдены");
+                            Register_Check();
+
+                        }
+
+                        client.Client_ID = long.Parse(line[0]);
+                        client.Client_Name = line[1];
+                        client.Client_Age = int.Parse(line[2]);
+                        client.Str_Client_Gender = line[3];
+
+                        Console.WriteLine(client.Client_ID.ToString());
+                        Console.WriteLine(client.Client_Name.ToString());
+                        Console.WriteLine(client.Client_Age.ToString());
+                        Console.WriteLine(client.Str_Client_Gender.ToString());
+                    }
+                    else
+                    {
+
+                        Console.WriteLine("Файла с данными не существует, зарегистрируйтесь ");
+
+                        CheckCycle = true;
+                        Bool_Register = false;
+
+                        Console.WriteLine("Введите ваш ID: 16 чисел ");
+                        client.Client_ID = long.Parse(Console.ReadLine());
+
+                        while (client.Client_ID > 10000000000000000 || client.Client_ID < 1000000000000000)
+                        {
+                            Console.WriteLine("Введите ID ещё раз: ");
+                            client.Client_ID = long.Parse(Console.ReadLine());
+                        }
+                        Console.WriteLine("Введите ваше имя: ");
+                        client.Client_Name = Console.ReadLine();
+
+                        while (string.IsNullOrWhiteSpace(client.Client_Name))
+                        {
+                            Console.WriteLine("Введите ваше имя ещё раз");
+                            client.Client_Name = Console.ReadLine();
+                        }
+
+                        Console.WriteLine("Введите ваш возраст (полных лет): ");
+                        client.Client_Age = int.Parse(Console.ReadLine());
+
+                        while (client.Client_Age > 150 || client.Client_Age < 18)
+                        {
+                            if (client.Client_Age < 18)
+                            {
+                                Console.WriteLine("Вы не достигли 18 лет ");
+                            }
+                            Console.WriteLine("Введите ваш возраст ещё раз: ");
+                            client.Client_Age = int.Parse(Console.ReadLine());
+                        }
+                        Console.WriteLine("Введите ваш гендер 1) мужчина, 2) женщина ");
+                        client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
+                        client.Str_Client_Gender = (client.Int_Client_Gender == 1) ? "мужчина" : client.Str_Client_Gender = "женщина";
+
+                        while (client.Int_Client_Gender != 1 && client.Int_Client_Gender != 2)
+                        {
+                            Console.WriteLine("Введите ваш гендер ешё раз 1) мужчина, 2) женщина ");
+                            client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
+                        }
+                        Console.WriteLine();
+
+                        StreamWriter SW = new StreamWriter("Data.txt", false);
+
+                        SW.WriteLine(client.Client_ID.ToString());
+                        SW.WriteLine(client.Client_Name.ToString());
+                        SW.WriteLine(client.Client_Age.ToString());
+                        SW.WriteLine(client.Str_Client_Gender.ToString());
+                        SW.Close();
+
+                        Console.WriteLine("Готово");
+                    }
+                }
+            }
+
+            void User_Not_Registered()
+            {
+                CheckCycle = true;
+                Bool_Register = false;
+
+                Console.WriteLine("Введите ваш ID: 16 чисел ");
+                client.Client_ID = long.Parse(Console.ReadLine());
+
+                while (client.Client_ID > 10000000000000000 || client.Client_ID < 1000000000000000)
+                {
+                    Console.WriteLine("Введите ID ещё раз: ");
+                    client.Client_ID = long.Parse(Console.ReadLine());
+                }
+
+                Console.WriteLine("Введите ваше имя: ");
+                client.Client_Name = Console.ReadLine();
+                while (string.IsNullOrWhiteSpace(client.Client_Name))
+                {
+                    Console.WriteLine("Введите ваше имя ещё раз");
+                    client.Client_Name = Console.ReadLine();
+                }
+
+                Console.WriteLine("Введите ваш возраст (полных лет): ");
+                client.Client_Age = int.Parse(Console.ReadLine());
+                while (client.Client_Age > 150 || client.Client_Age < 18)
+                {
+                    if (client.Client_Age < 18)
+                    {
+                        Console.WriteLine("Вы не достигли 18 лет ");
+                    }
+                    Console.WriteLine("Введите ваш возраст ещё раз: ");
+                    client.Client_Age = int.Parse(Console.ReadLine());
+                }
+                Console.WriteLine("Введите ваш гендер 1) мужчина, 2) женщина ");
+                client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
+
+                if (client.Int_Client_Gender == 1)
+                {
+                    client.Str_Client_Gender = "мужчина";
+                }
+                else if (client.Int_Client_Gender == 2)
+                {
+                    client.Str_Client_Gender = "женщина";
+                }
+
+                while (client.Int_Client_Gender != 1 && client.Int_Client_Gender != 2)
+                {
+                    Console.WriteLine("Введите ваш гендер ешё раз 1) мужчина, 2) женщина ");
+                    client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
+                }
+                Console.WriteLine();
+
+                StreamWriter SW = new StreamWriter("Data.txt", false);
+
+                SW.WriteLine(client.Client_ID.ToString());
+                SW.WriteLine(client.Client_Name.ToString());
+                SW.WriteLine(client.Client_Age.ToString());
+                SW.WriteLine(client.Str_Client_Gender.ToString());
+                SW.Close();
+
+                Console.WriteLine("Готово");
             }
         }
     }
 }
-
