@@ -600,7 +600,7 @@ namespace BankProjecktCMD
                         }
                         Console.WriteLine("Введите ваш гендер 1) мужчина, 2) женщина ");
                         client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
-                        client.Str_Client_Gender = (client.Int_Client_Gender == 1) ? "мужчина" : client.Str_Client_Gender = "женщина";
+                        client.Str_Client_Gender = (client.Int_Client_Gender == 1) ? "мужчина" : "женщина";
 
                         while (client.Int_Client_Gender != 1 && client.Int_Client_Gender != 2)
                         {
@@ -657,15 +657,7 @@ namespace BankProjecktCMD
                 }
                 Console.WriteLine("Введите ваш гендер 1) мужчина, 2) женщина ");
                 client.Int_Client_Gender = int.Parse(Console.ReadLine());// от введённого числа зависит гендер
-
-                if (client.Int_Client_Gender == 1)
-                {
-                    client.Str_Client_Gender = "мужчина";
-                }
-                else if (client.Int_Client_Gender == 2)
-                {
-                    client.Str_Client_Gender = "женщина";
-                }
+                client.Str_Client_Gender = (client.Int_Client_Gender == 1) ? "мужчина" : "женщина";
 
                 while (client.Int_Client_Gender != 1 && client.Int_Client_Gender != 2)
                 {
